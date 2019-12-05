@@ -1,1 +1,102 @@
-Hello World
+<html>
+   <head>
+    <!-- Insert these three lines at the <head> at the top of the html -->
+      <script src="https://cdn.jsdelivr.net/npm/vega@5.8.1"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.0-beta.12"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.1.0"></script>
+      <style>
+         #vg-tooltip-element table {
+          font-size: 13px;
+         }
+      </style>
+   </head>
+   <body>
+      <div id="vis" align="center"></div>
+      <script type="text/javascript">
+      //<![CDATA[
+        var spec = {
+          "config": {"view": {"width": 400, "height": 300}, "mark": {"tooltip": null}},
+          "data": {
+            "url": "https://raw.githubusercontent.com/DeKegel/paralog_essentiality/master/data/processed/results/closest_paralog_pairs_17_07_19.csv"
+          },
+          "mark": {"type": "circle", "opacity": 0.6, "size": 30},
+          "encoding": {
+            "color": {
+              "type": "nominal",
+              "condition": {"value": "#d95f02", "selection": "selector277"},
+              "field": "SL_label",
+              "legend": {
+                "columns": 1,
+                "cornerRadius": 2,
+                "fillColor": "#FFFFFF",
+                "labelFontSize": 13,
+                "labelLimit": 250,
+                "orient": "top",
+                "padding": 5,
+                "strokeColor": "#DDDDDD",
+                "title": null
+              },
+              "scale": {
+                "domain": [
+                  "Potential synthetic lethal paralog pair",
+                  "Tested paralog pair"
+                ],
+                "range": ["#1b9e77", "lightgrey"]
+              }
+            },
+            "opacity": {
+              "condition": {"value": 1, "selection": "selector277"},
+              "value": 0.6
+            },
+            "order": {"type": "nominal", "field": "SL"},
+            "tooltip": [
+              {"type": "nominal", "field": "A1"},
+              {"type": "nominal", "field": "A2"},
+              {"type": "nominal", "field": "SL", "title": "potential SL"}
+            ],
+            "x": {
+              "type": "quantitative",
+              "axis": {
+                "labelFontSize": 11,
+                "title": "Average expression of A2 when A1 is not essential",
+                "titleFontSize": 13,
+                "titleFontWeight": "normal"
+              },
+              "field": "A2_expr_A1_NE"
+            },
+            "y": {
+              "type": "quantitative",
+              "axis": {
+                "labelFontSize": 11,
+                "title": "Average expression of A2 when A1 is essential",
+                "titleFontSize": 13,
+                "titleFontWeight": "normal"
+              },
+              "field": "A2_expr_A1_E"
+            }
+          },
+          "height": 300,
+          "selection": {
+            "selector278": {"type": "interval", "bind": "scales"},
+            "selector277": {
+              "type": "single",
+              "on": "mouseover",
+              "nearest": true,
+              "empty": "none"
+            }
+          },
+          "transform": [
+            {
+              "calculate": "datum.SL=='True' ? 'Potential synthetic lethal paralog pair' : 'Tested paralog pair'",
+              "as": "SL_label"
+            },
+            {"calculate": "datum.A1 + ', ' + datum.A2", "as": "pair_label"}
+          ],
+          "width": 300,
+          "$schema": "https://vega.github.io/schema/vega-lite/v3.4.0.json"
+        }
+        vegaEmbed("#vis", spec);
+      //]]>
+      </script>
+   </body>
+</html>
